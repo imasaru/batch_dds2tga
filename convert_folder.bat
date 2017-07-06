@@ -23,17 +23,17 @@ rem copy the dds files only one folder deep
 if !dorec!==false xcopy "%srcdir%*.dds" "%destdir%" /c /r /d /y /i /q
 
 rem flush log
-break > %~dp0\conversion_log.txt
+break > "%~dp0"\conversion_log.txt
 
 rem convert the dds files to tga
-for /r %destdir% %%i in (*.dds) do (
+for /r "%destdir%" %%i in (*.dds) do (
 	set file=%%~ni
 	echo [!TIME!] Converting: !file!
-	%~dp0\readdxt.exe "%%i"
-	echo [!TIME!] Converted: %%i >> %~dp0\conversion_log.txt
+	"%~dp0"\readdxt.exe "%%i"
+	echo [!TIME!] Converted: %%i >> "%~dp0"\conversion_log.txt
 )
 
-for /r %destdir% %%i in (*.tga) do (
+for /r "%destdir%" %%i in (*.tga) do (
 
     set path=%%~dpi
     set tmp=%%~nxi
@@ -41,7 +41,7 @@ for /r %destdir% %%i in (*.tga) do (
 	rem delete unwanted tga files (*01.tga, *02.tga...)
     if not !tmp:~-6!==00.tga (
 		del %%i
-		echo [!TIME!] Deleted: !tmp! >> %~dp0\conversion_log.txt
+		echo [!TIME!] Deleted: !tmp! >> "%~dp0"\conversion_log.txt
 	)
     if !tmp:~-6!==00.tga (
 		rem rename converted tga to match the dds (remove 00 postfix)
@@ -51,12 +51,12 @@ for /r %destdir% %%i in (*.tga) do (
 		if !del!==Y del !path!!nn:~0,-2!.dds
 
 		echo [!TIME!] Clean up: !nn:~0,-2!.tga
-		echo [!TIME!] Clean up: !path!!nn:~0,-2!.tga >> %~dp0\conversion_log.txt
+		echo [!TIME!] Clean up: !path!!nn:~0,-2!.tga >> "%~dp0"\conversion_log.txt
     )
 
 )
 
-echo [!TIME!] Conversion process READY >> %~dp0\conversion_log.txt
+echo [!TIME!] Conversion process READY >> "%~dp0"\conversion_log.txt
 echo [!TIME!] Conversion process READY
 
 pause
