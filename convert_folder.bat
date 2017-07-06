@@ -7,16 +7,14 @@ set destdir=%~dp1%~nx1_converted\
 echo %srcdir%
 echo %destdir%
 set /p ok="Is this OK? (Y/N)"
-if !ok!==N exit
-if !ok!==n exit
+if /i !ok!==n exit
 
 set /p del="Delete copied .dds files after conversion? (Y/N)"
 
 set /p rec="Perform the conversion recursively? (Y/N)"
 
 set dorec=false
-if !rec!==y set dorec=true
-if !rec!==Y set dorec=true
+if /i !rec!==y set dorec=true
 
 rem copy the dds files with the folder structure
 if !dorec!==true xcopy "%srcdir%*.dds" "%destdir%" /c /s /r /d /y /i /q
